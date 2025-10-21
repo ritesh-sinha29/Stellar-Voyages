@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Experience luxury space travel to Mars and beyond. Reserve your seat for the ultimate cosmic adventure.">
+  <title>Stellar Voyages - Journey Beyond Earth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --color-primary: #00d4ff;
+      --color-secondary: #ff6b6b;
+      --color-accent: #4ecdc4;
+      --color-bg-dark: #0a0a0a;
+      --color-bg-card: rgba(255, 255, 255, 0.05);
+      --color-text-light: #ffffff;
+      --color-text-gray: #cccccc;
+      --color-text-muted: #888;
+      --color-border: rgba(255, 255, 255, 0.1);
+      --spacing-xs: 0.5rem;
+      --spacing-sm: 1rem;
+      --spacing-md: 1.5rem;
+      --spacing-lg: 2rem;
+      --spacing-xl: 3rem;
+      --spacing-2xl: 4rem;
+      --font-base: 'Space Grotesk', sans-serif;
+      --font-display: 'Orbitron', monospace;
+    }
+
+    body {
+      font-family: var(--font-base);
+      background: var(--color-bg-dark);
+      color: var(--color-text-light);
+      overflow-x: hidden;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--color-primary);
+      color: var(--color-bg-dark);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      text-decoration: none;
+      z-index: 10000;
+      font-weight: 600;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-sm);
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-border);
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-sm);
+      min-height: 60px;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--color-primary);
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .menu-toggle {
+      display: block;
+      background: none;
+      border: 2px solid var(--color-primary);
+      color: var(--color-primary);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .menu-toggle:hover,
+    .menu-toggle:focus {
+      background: var(--color-primary);
+      color: var(--color-bg-dark);
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(10, 10, 10, 0.98);
+      padding: var(--spacing-md);
+      gap: var(--spacing-sm);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-links.active {
+      display: flex;
+    }
+
+    .nav-links a {
+      color: var(--color-text-light);
+      text-decoration: none;
+      font-weight: 400;
+      padding: var(--spacing-sm);
+      transition: color 0.3s ease;
+      position: relative;
+      opacity: 0;
+      transform: translateY(-20px);
+      border-radius: 4px;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus {
+      color: var(--color-primary);
+      background: var(--color-bg-card);
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    main {
+      padding-top: 60px;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at center, #1a1a2e 0%, var(--color-bg-dark) 70%);
+      overflow: hidden;
+      padding: var(--spacing-xl) var(--spacing-sm);
+    }
+
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(2px 2px at 160px 30px, #ddd, transparent);
+      background-repeat: repeat;
+      background-size: 200px 100px;
+      animation: twinkle 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    .hero-content {
+      text-align: center;
+      z-index: 10;
+      max-width: 90%;
+    }
+
+    .glitch-text {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 10vw, 6rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      position: relative;
+      color: var(--color-primary);
+      letter-spacing: 0.1em;
+      text-shadow: 
+        0 0 5px var(--color-primary),
+        0 0 10px var(--color-primary),
+        0 0 15px var(--color-primary);
+      opacity: 0;
+      transform: scale(0.8) translateY(50px);
+      line-height: 1.2;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      color: var(--color-text-gray);
+      margin: var(--spacing-md) 0 var(--spacing-xl);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+      margin: var(--spacing-xl) 0;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-weight: 700;
+      color: var(--color-primary);
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    }
+
+    .stat-label {
+      font-size: clamp(0.8rem, 2vw, 0.9rem);
+      color: var(--color-text-muted);
+      letter-spacing: 0.1em;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      justify-content: center;
+      align-items: center;
+      margin-top: var(--spacing-xl);
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .btn {
+      padding: var(--spacing-sm) var(--spacing-lg);
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      min-width: 200px;
+    }
+
+    .btn:focus {
+      outline: 3px solid var(--color-primary);
+      outline-offset: 3px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+      color: var(--color-text-light);
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(0, 212, 255, 0.5);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--color-primary);
+      border: 2px solid var(--color-primary);
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus {
+      background: var(--color-primary);
+      color: var(--color-bg-dark);
+      transform: translateY(-3px);
+    }
+
+    .floating-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .planet {
+      position: absolute;
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+      opacity: 0;
+      transform: scale(0);
+    }
+
+    .planet-1 {
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle at 30% 30%, var(--color-secondary), #d63031);
+      top: 15%;
+      right: 5%;
+      animation-delay: 0s;
+    }
+
+    .planet-2 {
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle at 30% 30%, var(--color-accent), #00b894);
+      bottom: 20%;
+      left: 5%;
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .mission-details {
+      padding: var(--spacing-2xl) 0;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 3rem);
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+      color: var(--color-primary);
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .mission-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+      margin-top: var(--spacing-xl);
+    }
+
+    .mission-card {
+      background: var(--color-bg-card);
+      padding: var(--spacing-lg);
+      border-radius: 20px;
+      text-align: center;
+      border: 1px solid var(--color-border);
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      transform: translateY(60px) scale(0.9);
+    }
+
+    .mission-card:hover,
+    .mission-card:focus-within {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .mission-card h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 3vw, 1.5rem);
+      margin-bottom: var(--spacing-sm);
+      color: var(--color-primary);
+    }
+
+    .mission-card p {
+      color: var(--color-text-gray);
+      line-height: 1.6;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .contact-section,
+    .reservation-section {
+      padding: var(--spacing-2xl) 0;
+      background: var(--color-bg-dark);
+    }
+
+    .reservation-section {
+      background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+    }
+
+    .contact-intro,
+    .reservation-intro {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .contact-intro p,
+    .reservation-intro p {
+      color: var(--color-text-gray);
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      max-width: 600px;
+      margin: var(--spacing-md) auto 0;
+    }
+
+    .contact-form,
+    .reservation-form {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--color-bg-card);
+      padding: var(--spacing-lg);
+      border-radius: 20px;
+      border: 1px solid var(--color-border);
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .form-group {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: var(--spacing-xs);
+      color: var(--color-text-light);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .required {
+      color: var(--color-secondary);
+      margin-left: 2px;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: var(--spacing-sm);
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid var(--color-border);
+      border-radius: 8px;
+      color: var(--color-text-light);
+      font-family: var(--font-base);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: var(--color-text-muted);
+    }
+
+    .form-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-input.error,
+    .form-textarea.error,
+    .form-select.error {
+      border-color: var(--color-secondary);
+    }
+
+    .error-message {
+      display: none;
+      color: var(--color-secondary);
+      font-size: 0.85rem;
+      margin-top: var(--spacing-xs);
+    }
+
+    .error-message.visible {
+      display: block;
+    }
+
+    .form-actions {
+      margin-top: var(--spacing-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    .status-message {
+      padding: var(--spacing-md);
+      border-radius: 8px;
+      margin-bottom: var(--spacing-md);
+      display: none;
+      animation: slideDown 0.3s ease;
+    }
+
+    .status-message.visible {
+      display: block;
+    }
+
+    .status-success {
+      background: rgba(78, 205, 196, 0.1);
+      border: 1px solid var(--color-accent);
+      color: var(--color-accent);
+    }
+
+    .status-error {
+      background: rgba(255, 107, 107, 0.1);
+      border: 1px solid var(--color-secondary);
+      color: var(--color-secondary);
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-dialog {
+      position: relative;
+      width: 90%;
+      max-width: 900px;
+      animation: modalSlideIn 0.4s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        transform: scale(0.7) translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-content {
+      background: var(--color-bg-dark);
+      border: 2px solid var(--color-primary);
+      border-radius: 20px;
+      padding: var(--spacing-lg);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: var(--spacing-sm);
+      right: var(--spacing-sm);
+      background: var(--color-secondary);
+      color: white;
+      border: none;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      z-index: 10;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover,
+    .modal-close:focus {
+      background: var(--color-primary);
+      transform: scale(1.1);
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .video-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .video-wrap iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .footer {
+      background: var(--color-bg-dark);
+      padding: var(--spacing-xl) 0;
+      border-top: 1px solid var(--color-border);
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      text-align: center;
+      align-items: center;
+    }
+
+    .footer-text {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-contact {
+      margin: var(--spacing-xs) 0;
+    }
+
+    .social-links {
+      display: flex;
+      gap: var(--spacing-md);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .social-links a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      padding: var(--spacing-xs);
+      border-radius: 4px;
+    }
+
+    .social-links a:hover,
+    .social-links a:focus {
+      color: var(--color-primary);
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--color-border);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-left: var(--spacing-xs);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    @media (min-width: 48em) {
+      .navbar {
+        padding: var(--spacing-md) var(--spacing-lg);
+      }
+
+      .logo {
+        font-size: 1.2rem;
+      }
+
+      .menu-toggle {
+        display: none;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-direction: row;
+        position: static;
+        background: none;
+        padding: 0;
+        gap: var(--spacing-lg);
+        border: none;
+      }
+
+      .nav-links a {
+        opacity: 1;
+        transform: none;
+        padding: var(--spacing-xs) var(--spacing-sm);
+      }
+
+      .hero {
+        padding: var(--spacing-2xl) var(--spacing-md);
+      }
+
+      .hero-content {
+        max-width: 800px;
+      }
+
+      .hero-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-xl);
+      }
+
+      .hero-actions {
+        flex-direction: row;
+        gap: var(--spacing-md);
+      }
+
+      .mission-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-xl);
+      }
+
+      .planet-1 {
+        width: 70px;
+        height: 70px;
+        right: 10%;
+      }
+
+      .planet-2 {
+        width: 55px;
+        height: 55px;
+        left: 10%;
+      }
+
+      .reservation-form,
+      .contact-form {
+        padding: var(--spacing-xl);
+      }
+
+      .form-actions {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .footer-content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .footer-contact {
+        order: 2;
+      }
+
+      .social-links {
+        order: 3;
+      }
+    }
+
+    @media (min-width: 64em) {
+      .container {
+        padding: 0 var(--spacing-lg);
+      }
+
+      .mission-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .planet-1 {
+        width: 80px;
+        height: 80px;
+      }
+
+      .planet-2 {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    @media (min-width: 90em) {
+      .container {
+        padding: 0 var(--spacing-xl);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @media (prefers-contrast: high) {
+      .btn {
+        border-width: 3px;
+      }
+      
+      .form-input:focus,
+      .form-textarea:focus,
+      .form-select:focus {
+        outline: 3px solid var(--color-primary);
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="header">
+    <nav class="navbar container" aria-label="Main navigation">
+      <div class="nav-brand">
+        <span class="logo" role="img" aria-label="Stellar Voyages logo">🚀 STELLAR VOYAGES</span>
+      </div>
+      <button 
+        class="menu-toggle" 
+        aria-expanded="false" 
+        aria-controls="nav-menu"
+        aria-label="Toggle navigation menu"
+      >
+        Menu
+      </button>
+      <div class="nav-links" id="nav-menu">
+        <a href="#missions">Missions</a>
+        <a href="#experience">Experience</a>
+        <a href="#reservation">Reservation</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="hero-content">
+        <h1 id="hero-title" class="glitch-text" data-text="MARS AWAITS">
+          MARS AWAITS
+        </h1>
+        <p class="hero-subtitle">
+          Experience the ultimate frontier with luxury space travel to
+          Mars and beyond. Your cosmic adventure begins in 2025.
+        </p>
+        <div class="hero-stats" role="list" aria-label="Mission statistics">
+          <div class="stat" role="listitem">
+            <span class="stat-number" aria-label="384,400 kilometers">384,400</span>
+            <span class="stat-label">KM TO MARS</span>
+          </div>
+          <div class="stat" role="listitem">
+            <span class="stat-number" aria-label="7 months">7</span>
+            <span class="stat-label">MONTH JOURNEY</span>
+          </div>
+          <div class="stat" role="listitem">
+            <span class="stat-number" aria-label="12 passengers maximum">12</span>
+            <span class="stat-label">PASSENGERS MAX</span>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <a href="#reservation" class="btn btn-primary">Reserve Your Seat</a>
+          <button class="btn btn-secondary" id="watchLaunchBtn" aria-label="Watch launch video">Watch Launch</button>
+        </div>
+      </div>
+
+      <div class="floating-elements" aria-hidden="true">
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+      </div>
+    </section>
+
+    <section class="reservation-section" id="reservation" aria-labelledby="reservation-title">
+      <div class="container">
+        <div class="reservation-intro">
+          <h2 id="reservation-title" class="section-title">Reserve Your Seat</h2>
+          <p>
+            Secure your spot on humanity's greatest adventure. Fill out your details below
+            to reserve your seat on our next mission to Mars.
+          </p>
+        </div>
+
+        <form class="reservation-form" id="reservationForm" novalidate>
+          <div id="reservationFormStatus" class="status-message" role="alert" aria-live="polite"></div>
+
+          <div class="form-group">
+            <label for="resFullName" class="form-label">
+              Full Name <span class="required" aria-label="required">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="resFullName" 
+              name="resFullName" 
+              class="form-input"
+              placeholder="John Doe"
+              required
+              aria-required="true"
+              aria-describedby="resFullNameError"
+            />
+            <span id="resFullNameError" class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="resEmail" class="form-label">
+              Email Address <span class="required" aria-label="required">*</span>
+            </label>
+            <input 
+              type="email" 
+              id="resEmail" 
+              name="resEmail" 
+              class="form-input"
+              placeholder="john@example.com"
+              required
+              aria-required="true"
+              aria-describedby="resEmailError"
+            />
+            <span id="resEmailError" class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="resPhone" class="form-label">
+              Phone Number <span class="required" aria-label="required">*</span>
+            </label>
+            <input 
+              type="tel" 
+              id="resPhone" 
+              name="resPhone" 
+              class="form-input"
+              placeholder="+1 (555) 123-4567"
+              required
+              aria-required="true"
+              aria-describedby="resPhoneError"
+            />
+            <span id="resPhoneError" class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="resTravelDate" class="form-label">
+              Preferred Travel Date <span class="required" aria-label="required">*</span>
+            </label>
+            <input 
+              type="date" 
+              id="resTravelDate" 
+              name="resTravelDate" 
+              class="form-input"
+              required
+              aria-required="true"
+              aria-describedby="resTravelDateError"
+              min="2025-01-01"
+            />
+            <span id="resTravelDateError" class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="resPassengers" class="form-label">
+              Number of Passengers <span class="required" aria-label="required">*</span>
+            </label>
+            <select 
+              id="resPassengers" 
+              name="resPassengers" 
+              class="form-select"
+              required
+              aria-required="true"
+              aria-describedby="resPassengersError"
+            >
+              <option value="">Select number of passengers</option>
+              <option value="1">1 Passenger</option>
+              <option value="2">2 Passengers</option>
+              <option value="3">3 Passengers</option>
+              <option value="4">4 Passengers</option>
+              <option value="5">5+ Passengers</option>
+            </select>
+            <span id="resPassengersError" class="error-message"></span>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="reserveBtn">
+              Complete Reservation
+            </button>
+            <button type="reset" class="btn btn-secondary" id="reserveResetBtn">
+              Clear Form
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="contact-section" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="contact-intro">
+          <h2 id="contact-title" class="section-title">Get In Touch</h2>
+          <p>
+            Have questions about your journey to Mars? Our team of space travel experts
+            is here to help. Contact us today!
+          </p>
+        </div>
+
+        <form class="contact-form" id="contactForm" novalidate>
+          <div id="formStatus" class="status-message" role="alert" aria-live="polite"></div>
+
+          <div class="form-group">
+            <label for="fullName" class="form-label">
+              Full Name <span class="required" aria-label="required">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="fullName" 
+              name="fullName" 
+              class="form-input"
+              placeholder="John Doe"
+              required
+              aria-required="true"
+              aria-describedby="fullNameError"
+            />
+            <span id="fullNameError" class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">
+              Email Address <span class="required" aria-label="required">*</span>
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              class="form-input"
+              placeholder="john@example.com"
+              required
+              aria-required="true"
+              aria-describedby="emailError"
+            />
+            <span id="emailError" class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="form-label">
+              Phone Number
+            </label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone" 
+              class="form-input"
+              placeholder="+1 (555) 123-4567"
+              aria-describedby="phoneError"
+            />
+            <span id="phoneError" class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="message" class="form-label">
+              Message <span class="required" aria-label="required">*</span>
+            </label>
+            <textarea 
+              id="message" 
+              name="message" 
+              class="form-textarea"
+              placeholder="Tell us about your space travel dreams..."
+              required
+              aria-required="true"
+              aria-describedby="messageError"
+            ></textarea>
+            <span id="messageError" class="error-message"></span>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              Send Message
+            </button>
+            <button type="reset" class="btn btn-secondary" id="resetBtn">
+              Clear Form
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p class="footer-text">
+          &copy; 2025 Stellar Voyages. Pioneering the future of space tourism.
+        </p>
+        <div class="footer-contact">
+          <p class="footer-text">Contact: <a href="mailto:info@stellarvoyages.space" style="color: var(--color-primary); text-decoration: none;">info@stellarvoyages.space</a></p>
+        </div>
+        <nav class="social-links" aria-label="Social media links">
+          <a href="https://twitter.com" target="_blank" rel="noopener" aria-label="Follow us on Twitter">Twitter</a>
+          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Follow us on Instagram">Instagram</a>
+          <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="Subscribe on YouTube">YouTube</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Watch Launch Modal -->
+  <div id="launchModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="launchModalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <button class="modal-close" id="modalCloseBtn" aria-label="Close video">✕ Close</button>
+        <h3 id="launchModalTitle" style="color: var(--color-primary); text-align: center; margin-bottom: var(--spacing-md); font-family: var(--font-display);">Watch Our Launch</h3>
+        <div class="video-wrap" id="videoContainer">
+          <iframe 
+            src="https://www.youtube.com/embed/0qo78R_yYFA" 
+            title="SpaceX Mars Mission Launch" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mobile Menu Toggle
+      const menuToggle = document.querySelector('.menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+      
+      if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function() {
+          const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+          menuToggle.setAttribute('aria-expanded', !isExpanded);
+          navLinks.classList.toggle('active');
+          menuToggle.textContent = isExpanded ? 'Menu' : 'Close';
+        });
+
+        const navLinkItems = navLinks.querySelectorAll('a');
+        navLinkItems.forEach(link => {
+          link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.textContent = 'Menu';
+          });
+        });
+      }
+
+      // Watch Launch Modal
+      const watchLaunchBtn = document.getElementById('watchLaunchBtn');
+      const launchModal = document.getElementById('launchModal');
+      const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+      if (watchLaunchBtn && launchModal) {
+        watchLaunchBtn.addEventListener('click', function() {
+          launchModal.classList.add('active');
+          launchModal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+          modalCloseBtn.focus();
+        });
+
+        function closeModal() {
+          launchModal.classList.remove('active');
+          launchModal.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+          watchLaunchBtn.focus();
+        }
+
+        if (modalCloseBtn) {
+          modalCloseBtn.addEventListener('click', closeModal);
+        }
+
+        launchModal.addEventListener('click', function(e) {
+          if (e.target === launchModal) {
+            closeModal();
+          }
+        });
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && launchModal.classList.contains('active')) {
+            closeModal();
+          }
+        });
+      }
+
+      // GSAP Animations
+      if (typeof gsap !== 'undefined') {
+        try {
+          if (typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+          }
+
+          const tl = gsap.timeline();
+
+          tl.to(".header", {
+            duration: 1,
+            y: 0,
+            opacity: 1,
+            ease: "power3.out"
+          })
+          .to(".nav-links a", {
+            duration: 0.6,
+            opacity: 1,
+            y: 0,
+            stagger: 0.1,
+            ease: "power2.out"
+          }, "-=0.5");
+
+          tl.to(".glitch-text", {
+            duration: 1.2,
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            ease: "power3.out"
+          }, "-=0.3")
+          .to(".hero-subtitle", {
+            duration: 0.8,
+            opacity: 1,
+            y: 0,
+            ease: "power2.out"
+          }, "-=0.6")
+          .to(".hero-stats", {
+            duration: 1,
+            opacity: 1,
+            y: 0,
+            ease: "power2.out"
+          }, "-=0.4")
+          .to(".hero-actions", {
+            duration: 0.8,
+            opacity: 1,
+            y: 0,
+            ease: "power2.out"
+          }, "-=0.5");
+
+          tl.to(".planet", {
+            duration: 1,
+            opacity: 1,
+            scale: 1,
+            stagger: 0.3,
+            ease: "back.out(1.7)"
+          }, "-=1");
+
+          if (typeof ScrollTrigger !== 'undefined') {
+            gsap.to(".section-title", {
+              scrollTrigger: {
+                trigger: ".mission-details",
+                start: "top 80%",
+                scrub: false
+              },
+              duration: 1,
+              opacity: 1,
+              y: 0,
+              ease: "power3.out"
+            });
+
+            gsap.to(".mission-card", {
+              scrollTrigger: {
+                trigger: ".mission-grid",
+                start: "top 75%",
+                scrub: false
+              },
+              duration: 0.8,
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              stagger: 0.2,
+              ease: "power2.out"
+            });
+
+            gsap.to(".reservation-intro", {
+              scrollTrigger: {
+                trigger: ".reservation-section",
+                start: "top 80%",
+                scrub: false
+              },
+              duration: 0.8,
+              opacity: 1,
+              y: 0,
+              ease: "power2.out"
+            });
+
+            gsap.to(".reservation-form", {
+              scrollTrigger: {
+                trigger: ".reservation-section",
+                start: "top 70%",
+                scrub: false
+              },
+              duration: 1,
+              opacity: 1,
+              y: 0,
+              ease: "power3.out"
+            });
+
+            gsap.to(".contact-intro", {
+              scrollTrigger: {
+                trigger: ".contact-section",
+                start: "top 80%",
+                scrub: false
+              },
+              duration: 0.8,
+              opacity: 1,
+              y: 0,
+              ease: "power2.out"
+            });
+
+            gsap.to(".contact-form", {
+              scrollTrigger: {
+                trigger: ".contact-section",
+                start: "top 70%",
+                scrub: false
+              },
+              duration: 1,
+              opacity: 1,
+              y: 0,
+              ease: "power3.out"
+            });
+
+            gsap.to(".footer", {
+              scrollTrigger: {
+                trigger: ".footer",
+                start: "top 90%",
+                scrub: false
+              },
+              duration: 0.8,
+              opacity: 1,
+              y: 0,
+              ease: "power2.out"
+            });
+          }
+        } catch (error) {
+          console.error('Animation error:', error);
+        }
+      }
+
+      // Smooth Scrolling
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+            target.setAttribute('tabindex', '-1');
+            target.focus();
+          }
+        });
+      });
+
+      // Form Validation
+      const validators = {
+        fullName: {
+          validate: (value) => {
+            if (!value.trim()) return 'Full name is required';
+            if (value.trim().length < 2) return 'Name must be at least 2 characters';
+            if (!/^[a-zA-Z\s'-]+$/.test(value)) return 'Name can only contain letters, spaces, hyphens, and apostrophes';
+            return '';
+          }
+        },
+        email: {
+          validate: (value) => {
+            if (!value.trim()) return 'Email address is required';
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) return 'Please enter a valid email address';
+            return '';
+          }
+        },
+        phone: {
+          validate: (value) => {
+            if (value && value.trim()) {
+              const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+              if (!phoneRegex.test(value)) return 'Please enter a valid phone number';
+              const digitsOnly = value.replace(/\D/g, '');
+              if (digitsOnly.length < 10) return 'Phone number must be at least 10 digits';
+            }
+            return '';
+          }
+        },
+        message: {
+          validate: (value) => {
+            if (!value.trim()) return 'Message is required';
+            if (value.trim().length < 10) return 'Message must be at least 10 characters';
+            if (value.trim().length > 1000) return 'Message must not exceed 1000 characters';
+            return '';
+          }
+        }
+      };
+
+      const reservationValidators = {
+        resFullName: {
+          validate: (value) => {
+            if (!value.trim()) return 'Full name is required';
+            if (value.trim().length < 2) return 'Name must be at least 2 characters';
+            if (!/^[a-zA-Z\s'-]+$/.test(value)) return 'Name can only contain letters, spaces, hyphens, and apostrophes';
+            return '';
+          }
+        },
+        resEmail: {
+          validate: (value) => {
+            if (!value.trim()) return 'Email address is required';
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) return 'Please enter a valid email address';
+            return '';
+          }
+        },
+        resPhone: {
+          validate: (value) => {
+            if (!value.trim()) return 'Phone number is required';
+            const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+            if (!phoneRegex.test(value)) return 'Please enter a valid phone number';
+            const digitsOnly = value.replace(/\D/g, '');
+            if (digitsOnly.length < 10) return 'Phone number must be at least 10 digits';
+            return '';
+          }
+        },
+        resTravelDate: {
+          validate: (value) => {
+            if (!value) return 'Travel date is required';
+            const selectedDate = new Date(value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (selectedDate < today) return 'Travel date must be in the future';
+            return '';
+          }
+        },
+        resPassengers: {
+          validate: (value) => {
+            if (!value) return 'Please select number of passengers';
+            return '';
+          }
+        }
+      };
+
+      function showError(fieldName, message) {
+        const input = document.getElementById(fieldName);
+        const errorElement = document.getElementById(fieldName + 'Error');
+        
+        if (input && errorElement) {
+          input.classList.add('error');
+          input.setAttribute('aria-invalid', 'true');
+          errorElement.textContent = message;
+          errorElement.classList.add('visible');
+        }
+      }
+
+      function clearError(fieldName) {
+        const input = document.getElementById(fieldName);
+        const errorElement = document.getElementById(fieldName + 'Error');
+        
+        if (input && errorElement) {
+          input.classList.remove('error');
+          input.setAttribute('aria-invalid', 'false');
+          errorElement.textContent = '';
+          errorElement.classList.remove('visible');
+        }
+      }
+
+      function validateField(fieldName, validatorSet) {
+        const input = document.getElementById(fieldName);
+        if (!input || !validatorSet[fieldName]) return true;
+
+        const error = validatorSet[fieldName].validate(input.value);
+        
+        if (error) {
+          showError(fieldName, error);
+          return false;
+        } else {
+          clearError(fieldName);
+          return true;
+        }
+      }
+
+      // Add real-time validation
+      Object.keys(validators).forEach(fieldName => {
+        const input = document.getElementById(fieldName);
+        if (input) {
+          input.addEventListener('blur', () => validateField(fieldName, validators));
+          input.addEventListener('input', () => {
+            if (input.classList.contains('error')) {
+              validateField(fieldName, validators);
+            }
+          });
+        }
+      });
+
+      Object.keys(reservationValidators).forEach(fieldName => {
+        const input = document.getElementById(fieldName);
+        if (input) {
+          input.addEventListener('blur', () => validateField(fieldName, reservationValidators));
+          input.addEventListener('input', () => {
+            if (input.classList.contains('error')) {
+              validateField(fieldName, reservationValidators);
+            }
+          });
+        }
+      });
+
+      function showStatus(message, type, statusElement) {
+        if (!statusElement) return;
+        statusElement.textContent = message;
+        statusElement.className = 'status-message visible status-' + type;
+        statusElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      function hideStatus(statusElement) {
+        if (!statusElement) return;
+        statusElement.className = 'status-message';
+      }
+
+      // Contact Form Submission
+      const form = document.getElementById('contactForm');
+      const formStatus = document.getElementById('formStatus');
+      const submitBtn = document.getElementById('submitBtn');
+
+      if (form && submitBtn && formStatus) {
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          hideStatus(formStatus);
+
+          let isValid = true;
+          Object.keys(validators).forEach(fieldName => {
+            if (!validateField(fieldName, validators)) {
+              isValid = false;
+            }
+          });
+
+          if (!isValid) {
+            showStatus('Please correct the errors above before submitting.', 'error', formStatus);
+            const firstError = form.querySelector('.error');
+            if (firstError) firstError.focus();
+            return;
+          }
+
+          submitBtn.disabled = true;
+          const originalText = submitBtn.textContent;
+          submitBtn.innerHTML = 'Sending... <span class="spinner"></span>';
+
+          const contactFormData = {
+            fullName: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            message: document.getElementById('message').value,
+            timestamp: new Date().toISOString()
+          };
+
+          try {
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            showStatus('✉️ Success! Your message has been sent. We\'ll contact you within 24 hours.', 'success', formStatus);
+            form.reset();
+            Object.keys(validators).forEach(fieldName => clearError(fieldName));
+          } catch (error) {
+            console.error('Submission error:', error);
+            showStatus('❌ Sorry, there was an error sending your message. Please try again later.', 'error', formStatus);
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+          }
+        });
+
+        const resetBtn = document.getElementById('resetBtn');
+        if (resetBtn) {
+          resetBtn.addEventListener('click', function() {
+            hideStatus(formStatus);
+            Object.keys(validators).forEach(fieldName => clearError(fieldName));
+          });
+        }
+      }
+
+      // Reservation Form Submission
+      const reservationForm = document.getElementById('reservationForm');
+      const reservationFormStatus = document.getElementById('reservationFormStatus');
+      const reserveBtn = document.getElementById('reserveBtn');
+
+      if (reservationForm && reserveBtn && reservationFormStatus) {
+        reservationForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          hideStatus(reservationFormStatus);
+
+          let isValid = true;
+          Object.keys(reservationValidators).forEach(fieldName => {
+            if (!validateField(fieldName, reservationValidators)) {
+              isValid = false;
+            }
+          });
+
+          if (!isValid) {
+            showStatus('Please correct the errors above before submitting.', 'error', reservationFormStatus);
+            const firstError = reservationForm.querySelector('.error');
+            if (firstError) firstError.focus();
+            return;
+          }
+
+          reserveBtn.disabled = true;
+          const originalText = reserveBtn.textContent;
+          reserveBtn.innerHTML = 'Processing... <span class="spinner"></span>';
+
+          const reservationData = {
+            fullName: document.getElementById('resFullName').value,
+            email: document.getElementById('resEmail').value,
+            phone: document.getElementById('resPhone').value,
+            travelDate: document.getElementById('resTravelDate').value,
+            passengers: document.getElementById('resPassengers').value,
+            timestamp: new Date().toISOString(),
+            type: 'reservation'
+          };
+
+          try {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            showStatus('🚀 Reservation Confirmed! Your seat has been reserved. Check your email (' + reservationData.email + ') for confirmation details.', 'success', reservationFormStatus);
+            reservationForm.reset();
+            Object.keys(reservationValidators).forEach(fieldName => clearError(fieldName));
+          } catch (error) {
+            console.error('Reservation error:', error);
+            showStatus('❌ Sorry, there was an error processing your reservation. Please try again later.', 'error', reservationFormStatus);
+          } finally {
+            reserveBtn.disabled = false;
+            reserveBtn.textContent = originalText;
+          }
+        });
+
+        const reserveResetBtn = document.getElementById('reserveResetBtn');
+        if (reserveResetBtn) {
+          reserveResetBtn.addEventListener('click', function() {
+            hideStatus(reservationFormStatus);
+            Object.keys(reservationValidators).forEach(fieldName => clearError(fieldName));
+          });
+        }
+      }
+    });
+  </script>
+</body>
+</html>>
+
+    <section class="mission-details" id="missions" aria-labelledby="missions-title">
+      <div class="container">
+        <h2 id="missions-title" class="section-title">The Mars Experience</h2>
+        <div class="mission-grid">
+          <article class="mission-card">
+            <div class="card-icon" role="img" aria-label="Galaxy icon">🌌</div>
+            <h3>Luxury Spacecraft</h3>
+            <p>
+              State-of-the-art vessels with panoramic viewing decks,
+              zero-gravity lounges, and premium accommodations.
+            </p>
+          </article>
+          <article class="mission-card">
+            <div class="card-icon" role="img" aria-label="Microscope icon">🔬</div>
+            <h3>Scientific Discovery</h3>
+            <p>
+              Participate in groundbreaking research while exploring the
+              Red Planet's mysteries and ancient landscapes.
+            </p>
+          </article>
+          <article class="mission-card">
+            <div class="card-icon" role="img" aria-label="Mountain icon">🏔️</div>
+            <h3>Surface Exploration</h3>
+            <p>
+              Walk on Martian soil, visit Olympus Mons, and witness
+              breathtaking sunsets from another world.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section
